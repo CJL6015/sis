@@ -8,6 +8,7 @@ import {
   PictorialBarChart,
   RadarChart,
   ScatterChart,
+  EffectScatterChart,
 } from 'echarts/charts';
 
 import {
@@ -25,6 +26,8 @@ import {
   TimelineComponent,
   CalendarComponent,
   GraphicComponent,
+  MarkLineComponent,
+  MarkPointComponent,
 } from 'echarts/components';
 
 import { SVGRenderer } from 'echarts/renderers';
@@ -52,6 +55,9 @@ echarts.use([
   CalendarComponent,
   GraphicComponent,
   ScatterChart,
+  MarkLineComponent,
+  MarkPointComponent,
+  EffectScatterChart,
 ]);
 
 export default echarts;
