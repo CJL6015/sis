@@ -10,13 +10,13 @@
       @change="handleChange"
       @edit="handleEdit"
     >
-      <template v-for="item in getTabsState" :key="item.query ? item.fullPath : item.path">
+      <!-- <template v-for="item in getTabsState" :key="item.query ? item.fullPath : item.path">
         <TabPane :closable="!(item && item.meta && item.meta.affix)">
           <template #tab>
             <TabContent :tabItem="item" />
           </template>
         </TabPane>
-      </template>
+      </template> -->
 
       <template #rightExtra v-if="getShowRedo || getShowQuick">
         <TabRedo v-if="getShowRedo" />

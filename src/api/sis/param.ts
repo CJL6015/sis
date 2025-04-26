@@ -5,5 +5,5 @@ enum Api {
   NAME = '/param/list',
 }
 
-export const getParams = () => defHttp.get<any>({ url: Api.LIST });
+export const getParams = (params: any) => defHttp.get<any>({ url: Api.LIST, params });
 export const getParamsList = () => defHttp.get<any>({ url: Api.NAME });

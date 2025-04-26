@@ -5,7 +5,7 @@ import { t } from '/@/hooks/web/useI18n';
 
 const model: AppRouteModule = {
   path: '/sis',
-  name: '丰城SIS',
+  name: 'SIS',
   component: LAYOUT,
   redirect: '/sis/main',
   meta: {
@@ -19,8 +19,39 @@ const model: AppRouteModule = {
       name: 'main',
       component: () => import('/@/views/sis/main/index.vue'),
       meta: {
-        // affix: true,
         title: '主界面',
+      },
+    },
+    {
+      path: 'main2',
+      name: 'main2',
+      component: () => import('/@/views/sis/main2/index.vue'),
+      meta: {
+        title: '循环水系统优化概览',
+      },
+    },
+    {
+      path: 'optimize',
+      name: 'optimize',
+      component: () => import('/@/views/sis/optimize/index.vue'),
+      meta: {
+        title: '实时循泵优化节支计算',
+      },
+    },
+    {
+      path: 'load',
+      name: 'load',
+      component: () => import('/@/views/sis/load/index.vue'),
+      meta: {
+        title: '规划负荷循泵优化节支计算',
+      },
+    },
+    {
+      path: 'future',
+      name: 'future',
+      component: () => import('/@/views/sis/future/index.vue'),
+      meta: {
+        title: '未来96点循泵优化节支计算',
       },
     },
     {
@@ -30,14 +61,6 @@ const model: AppRouteModule = {
       meta: {
         // affix: true,
         title: '热力参数汇总',
-      },
-    },
-    {
-      path: 'optimize',
-      name: 'optimize',
-      component: () => import('/@/views/sis/optimize/index.vue'),
-      meta: {
-        title: '循泵优化节支查询',
       },
     },
     {
@@ -54,6 +77,14 @@ const model: AppRouteModule = {
       component: () => import('/@/views/sis/system/index.vue'),
       meta: {
         title: '冷端系统特性查询',
+      },
+    },
+    {
+      path: 'calculate',
+      name: 'calculate',
+      component: () => import('/@/views/sis/calculate/index.vue'),
+      meta: {
+        title: '调门实时计算',
       },
     },
   ],

@@ -5,7 +5,7 @@
     <Layout :class="[layoutClass]">
       <LayoutSideBar v-if="getShowSidebar || getIsMobile" />
       <Layout :class="`${prefixCls}-main`">
-        <LayoutMultipleHeader />
+        <!-- <LayoutMultipleHeader /> -->
         <LayoutContent />
         <LayoutFooter />
       </Layout>

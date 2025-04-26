@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="循泵优化节支查询">
+  <PageWrapper title="实时循泵优化节支查询">
     <a-card>
       <a-form :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">
@@ -20,6 +20,21 @@
       <a-spin :spinning="spinning" size="large" tip="加载中">
         <div ref="chartRef" style="width: 100%; height: 500px"></div
       ></a-spin>
+      <a-divider />
+      <div>
+        <IllustrationTable />
+      </div>
+      <div>
+        <BasicTable
+          @register="registerTable"
+          :columns="columns"
+          :data="[]"
+          :pagination="false"
+          :bordered="true"
+          :showIndexColumn="false"
+          :canResize="false"
+        />
+      </div>
     </a-card>
   </PageWrapper>
 </template>
@@ -34,12 +49,17 @@
     Divider,
     RangePicker,
     Spin,
+    Alert,
   } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { ref, Ref, onMounted } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
   import dayjs, { Dayjs } from 'dayjs';
   import { getHistory } from '/@/api/sis/influx';
+  import IllustrationTable from '../../components/IllustrationTable.vue';
+  import { columns } from './point.data';
+  import { BasicTable, useTable } from '/@/components/Table';
+  import { getRealtimeData } from '/@/api/sis/calculate';
 
   export default {
     components: {
@@ -53,6 +73,9 @@
       ADivider: Divider,
       ARangePicker: RangePicker,
       ASpin: Spin,
+      AAlert: Alert,
+      IllustrationTable,
+      BasicTable,
     },
     setup() {
       type RangeValue = [Dayjs, Dayjs];
@@ -66,23 +89,21 @@
 
       const chartRef = ref<HTMLDivElement | null>(null);
       const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
-      const names = {
-        '4': ['7pumps', '6pumps', '5pumps', '4pumps'],
-        '3': ['6pumps', '5pumps', '4pumps', '3pumps'],
-        '2': ['4pumps(A)', '4pumps(B)', '3pumps', '2pumps'],
-      };
-      function generateRandomData() {
-        const numberOfPoints = 288; // 24 hours * 60 minutes / 5 minutes
-        const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // 1 day in milliseconds
-        const currentTime: number = new Date().getTime();
+      const [registerTable, methods] = useTable({
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          size: 'large',
+        },
+        pagination: false,
+        bordered: true,
+        showIndexColumn: false,
+        canResize: false,
+      });
 
-        const dataList = Array.from({ length: numberOfPoints }, (_, index) => {
-          const time: number = currentTime - index * 5 * 60 * 1000;
-          const value: number = Math.random() * 100; // replace 100 with your desired range
-          return [time, value];
-        });
-
-        return dataList;
+      async function getRealtimeTable() {
+        const data = await getRealtimeData();
+        methods.setTableData(data);
       }
 
       async function getHistoryData() {
@@ -90,21 +111,17 @@
         const startDateDate = startDate.toDate();
         const endDateDate = endDate.toDate();
         const body = {
-          bucket: 'FC_SSYH',
+          bucket: 'HJB_SSYH',
           points:
-            'XDLR_C2A,XDLR_C2B,XDLR_C2C,XDLR_C2D,LXBS_C2,LXZDMLR_C2,JZYXSL_C2,LXZDXDLR_C2,SJBS_C2',
+            'XDLR_9,XDLR_8,XDLR_7,XDLR_6,XDLR_5,XDLR_4,XDLR_3,XDLR_2,XDLR_1,LXZDSY,SJSY,LXXBPWXH,SJXBPWXH',
           st: dayjs(startDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
           et: dayjs(endDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
         };
         spinning.value = true;
-        // const data = await getHistory(body);
-        // console.log(data);
-        const unitCount = 2; //data['JZYXSL_C2'][data['JZYXSL_C2'].length - 1][1];
+        const data = await getHistory(body);
+        console.log(data);
         spinning.value = false;
         setOptions({
-          title: {
-            text: '循泵优化节支查询',
-          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -113,16 +130,23 @@
           },
           legend: {
             data: [
-              names[unitCount][3],
-              names[unitCount][2],
-              names[unitCount][1],
-              names[unitCount][0],
-              '机组实际运行数量',
-              '循泵实际运行数量',
-              '理想泵数',
-              '理想最大毛利润',
-              '理想最大相对利润',
+              '循泵配伍9相对利润',
+              '循泵配伍8相对利润',
+              '循泵配伍7相对利润',
+              '循泵配伍6相对利润',
+              '循泵配伍5相对利润',
+              '循泵配伍4相对利润',
+              '循泵配伍3相对利润',
+              '循泵配伍2相对利润',
+              '循泵配伍1相对利润',
+              '理想最大收益',
+              '实际收益',
+              '理想循泵配伍',
+              '实际循泵配伍',
             ],
+            textStyle: {
+              fontSize: 18,
+            },
           },
           grid: {
             left: '3%',
@@ -140,7 +164,7 @@
           },
           yAxis: [
             {
-              name: '相对利润',
+              name: '相对利润(万元/h)',
               type: 'value',
               show: true,
               alignTicks: true,
@@ -148,19 +172,19 @@
                 show: true,
               },
               axisLabel: {
-                formatter: '{value} 万元/h',
+                fontSize: 16,
               },
               nameLocation: 'middle',
               nameRotate: 90,
               nameTextStyle: {
                 fontWeight: 'bold',
                 fontSize: 20,
-                align: 'left',
+                align: 'middle',
               },
-              nameGap: 75,
+              nameGap: 55,
             },
             {
-              name: '循环水泵投运数量',
+              name: '循泵配伍',
               type: 'value',
               show: true,
               alignTicks: true,
@@ -173,92 +197,225 @@
               nameTextStyle: {
                 fontWeight: 'bold',
                 fontSize: 20,
-                align: 'left',
+                align: 'middle',
               },
-              nameGap: 75,
+              nameGap: 45,
+              axisLabel: {
+                fontSize: 18,
+                formatter: (value) => (value > 0 && value < 10 ? value : ''), // 只显示 1-9
+              },
+              min: 0, // 设置最小值为 0
+              max: 10, // 设置最大值为 10
+              interval: 1,
             },
           ],
-          dataZoom: [{}],
+          dataZoom: [
+            {
+              showDataShadow: false,
+            },
+          ],
           series: [
             {
-              name: names[unitCount][3],
+              name: '循泵配伍9相对利润',
               type: 'line',
               symbol: 'none',
-              data: generateRandomData(), //data['XDLR_C2D'],
-              smooth: true,
+              data: data['XDLR_9'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
               lineStyle: {
+                color: 'rgb(0, 128, 0)', // 保留原有绿色
                 type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(0, 128, 0)',
               },
             },
             {
-              name: names[unitCount][2],
+              name: '循泵配伍8相对利润',
               type: 'line',
               symbol: 'none',
-              data: generateRandomData(), //data['XDLR_C2C'],
-              smooth: true,
+              data: data['XDLR_8'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
               lineStyle: {
+                color: 'rgb(128, 128, 0)', // 保留原有黄色
                 type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(128, 128, 0)',
               },
             },
             {
-              name: names[unitCount][1],
+              name: '循泵配伍7相对利润',
               symbol: 'none',
               type: 'line',
-              data: generateRandomData(), //data['XDLR_C2B'],
-              smooth: true,
+              data: data['XDLR_7'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
               lineStyle: {
+                color: 'rgb(128,0,128)', // 保留原有紫色
                 type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(128,0,128)',
               },
             },
             {
-              name: names[unitCount][0],
+              name: '循泵配伍6相对利润',
               symbol: 'none',
               type: 'line',
-              data: generateRandomData(), //data['XDLR_C2A'],
-              smooth: true,
+              data: data['XDLR_6'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
               lineStyle: {
+                color: 'blue', // 保留原有蓝色
                 type: 'dashed',
+              },
+              itemStyle: {
+                color: 'blue',
               },
             },
             {
-              name: '理想最大毛利润',
+              name: '循泵配伍5相对利润',
               symbol: 'none',
               type: 'line',
-              data: generateRandomData(), //data['LXZDMLR_C2'],
-              smooth: true,
+              data: data['XDLR_5'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
               yAxisIndex: 0,
+              lineStyle: {
+                color: 'black', // 保留原有黑色
+                type: 'dashed',
+              },
+              itemStyle: {
+                color: 'black',
+              },
             },
             {
-              name: '理想最大相对利润',
+              name: '循泵配伍4相对利润',
               symbol: 'none',
               type: 'line',
-              data: generateRandomData(), //data['LXZDXDLR_C2'],
-              smooth: true,
+              data: data['XDLR_4'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
               yAxisIndex: 0,
+              lineStyle: {
+                color: 'rgb(255, 165, 0)', // 新增橙色
+                type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(255, 165, 0)',
+              },
             },
             {
-              name: '机组实际运行数量',
+              name: '循泵配伍3相对利润',
               symbol: 'none',
               type: 'line',
-              data: generateRandomData(), // data['JZYXSL_C2'],
-              smooth: true,
-              yAxisIndex: 1,
+              data: data['XDLR_3'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
+              yAxisIndex: 0,
+              lineStyle: {
+                color: 'rgb(70, 130, 180)', // 新增钢蓝色
+                type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(70, 130, 180)',
+              },
             },
             {
-              name: '理想泵数',
+              name: '循泵配伍2相对利润',
+              symbol: 'none',
+              type: 'line',
+              data: data['XDLR_2'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
+              yAxisIndex: 0,
+              lineStyle: {
+                color: 'rgb(255, 20, 147)', // 新增深粉色
+                type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(255, 20, 147)',
+              },
+            },
+            {
+              name: '循泵配伍1相对利润',
+              symbol: 'none',
+              type: 'line',
+              data: data['XDLR_1'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
+              yAxisIndex: 0,
+              lineStyle: {
+                color: 'rgb(0, 191, 255)', // 新增天蓝色
+                type: 'dashed',
+              },
+              itemStyle: {
+                color: 'rgb(0, 191, 255)',
+              },
+            },
+            {
+              name: '理想最大收益',
+              symbol: 'none',
+              type: 'line',
+              data: data['LXZDSY'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
+              yAxisIndex: 0,
+              lineStyle: {
+                color: 'black', // 保留原有黑色
+                width: 3,
+              },
+              itemStyle: {
+                color: 'black',
+              },
+            },
+            {
+              name: '实际收益',
+              symbol: 'none',
+              type: 'line',
+              data: data['SJSY'].map((num) => {
+                return [num[0], parseFloat(num[1].toFixed(6))];
+              }),
+              yAxisIndex: 0,
+              lineStyle: {
+                color: 'rgb(105, 105, 105)', // 新增深灰色
+                width: 3,
+              },
+              itemStyle: {
+                color: 'rgb(105, 105, 105)',
+              },
+            },
+            {
+              name: '理想循泵配伍',
               symbol: 'none',
               type: 'line',
               step: 'end',
-              data: generateRandomData(), //data['LXBS_C2'],
+              data: data['LXXBPWXH'],
               yAxisIndex: 1,
+              lineStyle: {
+                color: 'red', // 保留原有红色
+                width: 3,
+              },
+              itemStyle: {
+                color: 'red',
+              },
             },
             {
-              name: '循泵实际运行数量',
+              name: '实际循泵配伍',
               symbol: 'none',
               type: 'line',
               step: 'end',
-              data: generateRandomData(), // data['SJBS_C2'],
+              data: data['SJXBPWXH'],
               yAxisIndex: 1,
+              lineStyle: {
+                color: 'rgb(160, 82, 45)', // 保留原有棕色
+                width: 3,
+              },
+              itemStyle: {
+                color: 'rgb(160, 82, 45)',
+              },
             },
           ],
         });
@@ -266,6 +423,7 @@
 
       onMounted(() => {
         getHistoryData();
+        getRealtimeTable();
       });
 
       const labelCol = { style: { width: '120px' } };
@@ -275,7 +433,28 @@
         historyTime,
         getHistoryData,
         spinning,
+        registerTable,
       };
     },
   };
 </script>
+<style scoped>
+  .inf-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .inf-table th,
+  .inf-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .inf-table tr:nth-child(even) {
+    background-color: #ffffff48;
+  }
+
+  .inf-table tr:nth-child(odd) {
+    background-color: #ffffff48;
+  }
+</style>

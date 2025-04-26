@@ -1,21 +1,35 @@
 <template>
   <PageWrapper title="热力参数汇总">
-    <BasicTable @register="registerTable" />
+    <a-card
+      ><div style="margin-bottom: 16px">
+        <a-input
+          v-model:value="inputValue"
+          placeholder="请输入参数"
+          style="width: 200px; margin-right: 8px"
+        />
+        <a-button type="primary" @click="onSearch">确定</a-button>
+      </div>
+      <BasicTable @register="registerTable"
+    /></a-card>
   </PageWrapper>
 </template>
 <script lang="ts">
   import { PageWrapper } from '/@/components/Page';
   import { columns } from './point.data';
-  import { BasicTable, useTable } from '/@/components/Table';
   import { getParams } from '/@/api/sis/param';
-  import { onMounted, onBeforeUnmount } from 'vue';
+  import { ref, onMounted, onBeforeUnmount } from 'vue';
+  import { BasicTable, useTable } from '/@/components/Table';
+
+  import { Card } from 'ant-design-vue';
 
   export default {
     components: {
       BasicTable,
       PageWrapper,
+      ACard: Card,
     },
     setup() {
+      const inputValue = ref(''); // 输入框的值
       const [registerTable, methods] = useTable({
         columns,
         formConfig: {
@@ -26,11 +40,18 @@
         showIndexColumn: false,
         canResize: false,
       });
+      const searchData = ref('');
 
       async function freshTableData() {
-        const data = await getParams();
+        const data = await getParams({
+          search: searchData.value,
+        });
         methods.setTableData(data);
       }
+
+      const onSearch = () => {
+        searchData.value = inputValue.value;
+      };
 
       let timer = null;
 
@@ -49,6 +70,8 @@
       });
 
       return {
+        inputValue,
+        onSearch,
         registerTable,
       };
     },

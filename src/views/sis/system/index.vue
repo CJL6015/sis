@@ -3,17 +3,15 @@
     <a-card>
       <a-form :model="formData" :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">
-          <a-col :md="3">
+          <a-col :md="4">
             <a-form-item label="机组">
               <a-select v-model:value="formData.unit">
                 <a-select-option value="1">#1机组 </a-select-option>
                 <a-select-option value="2">#2机组 </a-select-option>
-                <a-select-option value="3">#3机组 </a-select-option>
-                <a-select-option value="4">#4机组 </a-select-option>
               </a-select>
             </a-form-item></a-col
           >
-          <a-col :md="5">
+          <a-col :md="4">
             <a-form-item label="横坐标参数">
               <a-form-item name="input-number" no-style>
                 <a-select
@@ -26,6 +24,7 @@
             <a-form-item label="纵坐标参数">
               <a-form-item name="input-number" no-style>
                 <a-select
+                  show-search
                   v-model:value="formData.y"
                   :options="options.map((option) => ({ value: option, label: option }))"
                 />
@@ -37,7 +36,7 @@
                 <a-range-picker v-model:value="historyTime" show-time />
               </a-form-item> </a-form-item
           ></a-col>
-          <a-col :md="2">
+          <a-col :md="1">
             <a-form-item>
               <a-button type="primary" html-type="submit" @click="getScatterData">确定</a-button>
             </a-form-item>
@@ -132,6 +131,17 @@
         setOptions({
           tooltip: {
             position: 'top',
+            formatter: function (params) {
+              return (
+                formData.value.x +
+                ' : ' +
+                params.value[0] +
+                '<br>' +
+                formData.value.y +
+                ' : ' +
+                params.value[1]
+              );
+            },
           },
           xAxis: {
             name: formData.value.x,
@@ -141,6 +151,10 @@
               align: 'left',
             },
             nameLocation: 'middle',
+            axisLabel: {
+              fontSize: 18,
+            },
+            nameGap: 45,
           },
           yAxis: {
             name: formData.value.y,
@@ -150,13 +164,16 @@
               align: 'left',
             },
             nameLocation: 'middle',
-            nameGap: 25,
+            nameGap: 45,
+            axisLabel: {
+              fontSize: 18,
+            },
           },
           grid: {
-            left: '3%',
+            left: '8%',
             right: '4%',
-            bottom: '3%',
-            top: '3%',
+            bottom: '8%',
+            top: '5%',
             containLabel: true,
           },
           series: [
