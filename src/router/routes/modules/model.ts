@@ -4,41 +4,56 @@ import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/hooks/web/useI18n';
 
 const model: AppRouteModule = {
-  path: '/model',
-  name: '模型中心',
+  path: '/sis',
+  name: '丰城SIS',
   component: LAYOUT,
-  redirect: '/model/list',
+  redirect: '/sis/main',
   meta: {
     orderNo: 10,
     icon: 'ion:grid-outline',
-    title: t('routes.model.modelCenter'),
+    title: '智能sis',
   },
   children: [
     {
-      path: 'list',
-      name: 'list',
-      component: () => import('/@/views/model/list/index.vue'),
+      path: 'main',
+      name: 'main',
+      component: () => import('/@/views/sis/main/index.vue'),
       meta: {
         // affix: true,
-        title: t('routes.model.model'),
+        title: '主界面',
       },
     },
     {
-      path: 'train/:id',
-      name: 'train',
-      component: () => import('/@/views/model/train/index.vue'),
+      path: 'param',
+      name: 'param',
+      component: () => import('/@/views/sis/param/index.vue'),
       meta: {
         // affix: true,
-        title: t('routes.model.train'),
-        hideMenu: true,
+        title: '热力参数汇总',
       },
     },
     {
-      path: 'trash',
-      name: 'trash',
-      component: () => import('/@/views/model/trash/index.vue'),
+      path: 'optimize',
+      name: 'optimize',
+      component: () => import('/@/views/sis/optimize/index.vue'),
       meta: {
-        title: t('routes.model.trash'),
+        title: '循泵优化节支查询',
+      },
+    },
+    {
+      path: 'history',
+      name: 'history',
+      component: () => import('/@/views/sis/history/index.vue'),
+      meta: {
+        title: '历史参数查询',
+      },
+    },
+    {
+      path: 'system',
+      name: 'system',
+      component: () => import('/@/views/sis/system/index.vue'),
+      meta: {
+        title: '冷端系统特性查询',
       },
     },
   ],
