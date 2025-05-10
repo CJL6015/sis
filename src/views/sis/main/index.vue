@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="全厂主要信息一览">
+  <PageWrapper title="主要信息一览">
     <a-card>
       <a-row>
         <a-col :md="12">
@@ -372,7 +372,7 @@
                 },
               },
               {
-                name: '循泵配伍',
+                name: '循泵配伍方式',
                 type: 'value',
                 show: true,
                 alignTicks: true,

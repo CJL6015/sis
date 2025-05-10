@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="全厂主要信息一览">
+  <PageWrapper title="循环水系统优化概览">
     <a-card>
       <a-row>
         <a-col :md="12">
@@ -366,7 +366,7 @@
                 },
               },
               {
-                name: '循泵配伍',
+                name: '循泵配伍方式',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -536,7 +536,7 @@
                 nameGap: 55,
               },
               {
-                name: '循环配伍',
+                name: '循环配伍方式',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -919,7 +919,7 @@
                 nameGap: 55,
               },
               {
-                name: '循环配伍',
+                name: '循环配伍方式',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -1087,7 +1087,7 @@
                 nameGap: 55,
               },
               {
-                name: '循环配伍',
+                name: '循环配伍方式',
                 type: 'value',
                 show: true,
                 alignTicks: true,

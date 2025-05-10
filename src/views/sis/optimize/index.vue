@@ -1,12 +1,12 @@
 <template>
-  <PageWrapper title="实时循泵优化节支查询">
+  <PageWrapper title="实时循泵优化节支计算">
     <a-card>
       <a-form :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">
           <a-col :md="8">
             <a-form-item label="历史时间">
               <a-form-item name="input-number" no-style>
-                <a-range-picker v-model:value="historyTime" show-time />
+                <a-range-picker v-model:value="historyTime" :ranges="quickRanges" show-time />
               </a-form-item> </a-form-item
           ></a-col>
           <a-col :md="3">
@@ -425,7 +425,12 @@
         getHistoryData();
         getRealtimeTable();
       });
-
+      const quickRanges = {
+        '前6小时': [dayjs().subtract(6, 'hour'), dayjs()],
+        '前12小时': [dayjs().subtract(12, 'hour'), dayjs()],
+        '前1天': [dayjs().subtract(1, 'day'), dayjs()],
+        '前3天': [dayjs().subtract(3, 'day'), dayjs()],
+      };
       const labelCol = { style: { width: '120px' } };
       return {
         labelCol,
@@ -434,6 +439,7 @@
         getHistoryData,
         spinning,
         registerTable,
+        quickRanges,
       };
     },
   };

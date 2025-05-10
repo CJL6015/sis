@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="冷端系统特性">
+  <PageWrapper title="冷端系统特性查询">
     <a-card>
       <a-form :model="formData" :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">

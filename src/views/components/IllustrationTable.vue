@@ -10,11 +10,11 @@
           <td colspan="4" style="background-color: #fafafa">双机组运行</td>
         </tr>
         <tr>
-          <td>循泵配伍</td>
+          <td>循泵配伍方式</td>
           <td>循泵运行状态</td>
-          <td>循泵配伍</td>
+          <td>循泵配伍方式</td>
           <td>循泵运行状态</td>
-          <td>循泵配伍</td>
+          <td>循泵配伍方式</td>
           <td>循泵运行状态</td>
         </tr>
       </thead>
@@ -56,27 +56,27 @@
     setup() {
       const tableData = ref([
         {
-          singlePumpLevel: 9,
+          singlePumpLevel: '方式9',
           singlePumpState: '一高一低',
-          doublePumpLevel1: 6,
+          doublePumpLevel1: '方式6',
           doublePumpState1: '两高两低',
-          doublePumpLevel2: 3,
+          doublePumpLevel2: '方式3',
           doublePumpState2: '两高',
         },
         {
-          singlePumpLevel: 8,
+          singlePumpLevel: '方式8',
           singlePumpState: '一高',
-          doublePumpLevel1: 5,
+          doublePumpLevel1: '方式5',
           doublePumpState1: '两高一低',
-          doublePumpLevel2: 2,
+          doublePumpLevel2: '方式2',
           doublePumpState2: '一高一低',
         },
         {
-          singlePumpLevel: 7,
+          singlePumpLevel: '方式7',
           singlePumpState: '一低',
-          doublePumpLevel1: 4,
+          doublePumpLevel1: '方式4',
           doublePumpState1: '两低一高',
-          doublePumpLevel2: 1,
+          doublePumpLevel2: '方式1',
           doublePumpState2: '两低',
         },
       ]);
