@@ -182,7 +182,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 65,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -203,7 +203,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 35,
+                nameGap: 40,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -236,7 +236,7 @@
                   color: 'red',
                 },
                 symbol: 'none',
-                yAxisIndex: 0,
+                yAxisIndex: 1,
               },
               {
                 name: '#1机组低压B真空泵电流',
@@ -270,7 +270,7 @@
               },
             },
             legend: {
-              data: ['#2机组低背压综合热阻', '#2机组低压A真空泵电流', ' #2机组低压B真空泵电流'],
+              data: ['#2机组低背压综合热阻', '#2机组低压A真空泵电流', '#2机组低压B真空泵电流'],
               textStyle: {
                 fontSize: 18,
               },
@@ -310,7 +310,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 65,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -331,7 +331,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 35,
+                nameGap: 40,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -364,7 +364,7 @@
                   color: 'red',
                 },
                 symbol: 'none',
-                yAxisIndex: 0,
+                yAxisIndex: 1,
               },
               {
                 name: '#2机组低压B真空泵电流',
@@ -438,7 +438,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 65,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -459,7 +459,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 35,
+                nameGap: 40,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -566,7 +566,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 65,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -587,7 +587,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 35,
+                nameGap: 40,
                 axisLabel: {
                   fontSize: 18,
                 },

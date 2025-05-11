@@ -31,6 +31,9 @@
               </a-select>
             </a-form-item>
           </a-col>
+          <a-col :md="4">
+            <a-alert :message="status" type="info" style="height: 32px" />
+          </a-col>
           <a-col :md="3">
             <a-form-item>
               <a-button type="primary" html-type="submit" @click="getHistoryData">确定</a-button>
@@ -146,6 +149,7 @@
         { field: '高背压排汽温度平均值(℃)', value: '--' },
         { field: '高背压排汽温度平均值对应饱和压力(kPa)', value: '--' },
       ]);
+      const status = ref('');
       async function getHistoryData() {
         if (!selectedType.value) {
           createMessage.error('请选择试验记录');
@@ -157,6 +161,7 @@
         };
         const data = await getResult(params);
         console.log('data', data);
+        status.value = '当前试验状态： ' + data.status;
         const dynamicData = data.tableData;
         tableData.value = fixedFields.map((field, index) => ({
           field,
@@ -361,6 +366,7 @@
         console.log('data', data);
         if (data) {
           createMessage.success('手动触发成功');
+          status.value = '当前试验状态： ' + data;
         } else {
           createMessage.error('手动触发失败');
         }
@@ -387,6 +393,7 @@
         tableData,
         getHistoryData,
         submitData,
+        status,
       };
     },
   };

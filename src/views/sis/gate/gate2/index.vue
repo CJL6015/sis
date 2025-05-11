@@ -10,7 +10,7 @@
             </colgroup>
             <thead>
               <tr>
-                <th colspan="2">故障诊断表</th>
+                <th colspan="2">调门卡涩故障</th>
               </tr>
             </thead>
             <tbody>

@@ -6,7 +6,7 @@
   <div class="anticon" :class="getAppLogoClass" @click="goHome">
     <img src="../../../assets/images/logo.png" />
     <div class="ml-2 truncate md:opacity-100" :class="getTitleClass" v-show="showTitle">
-      国能黄金埠电厂#1、#2汽轮机组<br />冷端系统节能优化与调门特性在线监测系统
+      {{ title }}
     </div>
   </div>
 </template>

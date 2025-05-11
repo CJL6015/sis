@@ -3,14 +3,14 @@
     <a-card>
       <a-form :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">
-          <!-- <a-col :md="6">
+          <a-col :md="6">
             <a-form-item label="机组">
-              <a-select v-model:value="unit" mode="multiple">
+              <a-select value="1" disabled>
                 <a-select-option value="1">#1机组 </a-select-option>
                 <a-select-option value="2">#2机组 </a-select-option>
               </a-select>
             </a-form-item></a-col
-          > -->
+          >
           <a-col :md="8">
             <a-form-item label="参数选择">
               <a-form-item name="input-number" no-style>
@@ -41,6 +41,44 @@
           style="width: 100%; height: 400px; margin-bottom: 10px"
           v-show="unit.indexOf('1') > -1"
         ></div>
+      </a-spin>
+    </a-card>
+    <a-card>
+      <a-form :label-col="labelCol">
+        <a-row :gutter="24" class="custom-row-gap">
+          <a-col :md="6">
+            <a-form-item label="机组">
+              <a-select value="2" disabled>
+                <a-select-option value="1">#1机组 </a-select-option>
+                <a-select-option value="2">#2机组 </a-select-option>
+              </a-select>
+            </a-form-item></a-col
+          >
+          <a-col :md="8">
+            <a-form-item label="参数选择">
+              <a-form-item name="input-number" no-style>
+                <a-select
+                  mode="multiple"
+                  v-model:value="points1"
+                  :options="options.map((option) => ({ value: option, label: option }))"
+                />
+              </a-form-item> </a-form-item
+          ></a-col>
+          <a-col :md="8">
+            <a-form-item label="历史时间">
+              <a-form-item name="input-number" no-style>
+                <a-range-picker v-model:value="historyTime1" :ranges="quickRanges" show-time />
+              </a-form-item> </a-form-item
+          ></a-col>
+          <a-col :md="2">
+            <a-form-item>
+              <a-button type="primary" html-type="submit" @click="fetchHistory1">确定</a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <a-divider />
+      <a-spin :spinning="spinning1" size="large" tip="加载中">
         <div
           ref="chartRef2"
           style="width: 100%; height: 400px; margin-bottom: 10px"
@@ -89,13 +127,16 @@
     setup() {
       type RangeValue = [Dayjs, Dayjs];
       const historyTime = ref<RangeValue>();
+      const historyTime1 = ref<RangeValue>();
       const currentDate: Dayjs = dayjs();
       const lastMonthDate: Dayjs = currentDate.subtract(1, 'day');
       const rangeValue: RangeValue = [lastMonthDate, currentDate];
       historyTime.value = rangeValue;
+      historyTime1.value = rangeValue;
 
       const unit = ref(['1', '2']);
       const spinning = ref<boolean>(false);
+      const spinning1 = ref<boolean>(false);
 
       const chartRef1 = ref<HTMLDivElement | null>(null);
       const chartRef2 = ref<HTMLDivElement | null>(null);
@@ -103,6 +144,7 @@
       const chartRef4 = ref<HTMLDivElement | null>(null);
 
       const points = ref([]);
+      const points1 = ref([]);
 
       const { setOptions: setOptions1, getInstance: getInstance1 } = useECharts(
         chartRef1 as Ref<HTMLDivElement>,
@@ -122,7 +164,9 @@
         const data = await getParamsList();
         options.value = data;
         points.value.push(data[0]);
+        points1.value.push(data[0]);
         fetchHistory();
+        fetchHistory1();
       }
       onMounted(() => {
         getOptions();
@@ -138,8 +182,9 @@
         const [startDate, endDate] = historyTime.value;
         const startDateDate = startDate.toDate();
         const endDateDate = endDate.toDate();
+        const id = 1;
         const params = {
-          unitId: unit.value.join(','),
+          unitId: 1,
           st: dayjs(startDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
           et: dayjs(endDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
           points: points.value.join(','),
@@ -149,20 +194,38 @@
         const data = await getHistory(params);
         console.log(data);
         let i = 0;
-        for (const id of unit.value) {
-          setChart(data[i++], chartMap[id], id);
-        }
+        setChart(data[0], chartMap[id], id);
+        spinning.value = false;
+      }
+      async function fetchHistory1() {
+        const [startDate, endDate] = historyTime1.value;
+        const startDateDate = startDate.toDate();
+        const endDateDate = endDate.toDate();
+        const id = 2;
+        const params = {
+          unitId: 2,
+          st: dayjs(startDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
+          et: dayjs(endDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
+          points: points1.value.join(','),
+        };
+        console.log(unit.value.indexOf('1'));
+        spinning.value = true;
+        const data = await getHistory(params);
+        console.log(data);
+        let i = 0;
+        setChart(data[0], chartMap[id], id);
         spinning.value = false;
       }
 
       function setChart(data, setOptions, id) {
         let series: any = [];
         let yAxis: any = [];
-        for (let i = 0; i < points.value.length; i++) {
+        const pointsValue = id === 1 ? points.value : points1.value;
+        for (let i = 0; i < pointsValue.length; i++) {
           series.push({
-            name: points.value[i],
+            name: pointsValue[i],
             type: 'line',
-            data: data[points.value[i]],
+            data: data[pointsValue[i]],
             symbol: 'none',
             yAxisIndex: i,
           });
@@ -175,10 +238,8 @@
         }
         console.log(series);
         spinning.value = false;
+        spinning1.value = false;
         let option1 = {
-          title: {
-            text: `#${id}机组`,
-          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -187,7 +248,7 @@
           },
           legend: {
             top: 'bottom',
-            data: points.value,
+            data: pointsValue,
             textStyle: {
               fontSize: 18,
             },
@@ -269,9 +330,13 @@
         unit,
         options,
         fetchHistory,
+        fetchHistory1,
         spinning,
         points,
         quickRanges,
+        points1,
+        spinning1,
+        historyTime1,
       };
     },
   };
