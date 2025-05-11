@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue';
-  import { Col, Row, Card, Divider } from 'ant-design-vue';
+  import { defineComponent, ref, onMounted, onBeforeUnmount, h } from 'vue';
+  import { Col, Row, Card, Divider, Modal } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { useECharts } from '/@/hooks/web/useECharts';
-  import { getInfo, getLoadTrend, getPumpTrend } from '/@/api/sis/info';
+  import { getInfo, getLoadTrend, getPumpTrend, getPointInfo } from '/@/api/sis/info';
   import dayjs from 'dayjs';
   import { BasicTable, useTable } from '/@/components/Table';
   import { columns } from './point.data';
@@ -66,8 +66,34 @@
       const { setOptions: setOptions1 } = useECharts(chartRef1);
 
       let timer = null;
+      const openNotificationWithIcon = async () => {
+        const info = await getPointInfo();
+        if (info) {
+          const contentVNode = h(
+            'div',
+            {
+              style: {
+                fontSize: '20px',
+              },
+            },
+            info['info']
+              .split(';')
+              .map((line, index) =>
+                h('div', { key: index, style: 'margin-bottom: 6px;margin-left:30px' }, line),
+              ),
+          );
+
+          Modal.error({
+            content: contentVNode,
+            title: info['point'],
+            centered: true,
+            okText: '确定',
+          });
+        }
+      };
 
       onMounted(() => {
+        openNotificationWithIcon();
         setChart();
         setChart1();
         setInfo();

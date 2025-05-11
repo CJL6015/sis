@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="#2机组水侧脏污与胶球清洗">
+  <PageWrapper title="汽侧不凝气体诊断">
     <a-card>
       <a-form :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">
@@ -72,7 +72,7 @@
   import { ref, Ref, onMounted } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
   import dayjs, { Dayjs } from 'dayjs';
-  import { getCleanData1 } from '/@/api/sis/diagnosis';
+  import { getCleanData2 } from '/@/api/sis/diagnosis';
 
   export default {
     components: {
@@ -123,7 +123,7 @@
           period: timeValue.value + timeUnit.value,
         };
         spinning.value = true;
-        const data = await getCleanData1(body);
+        const data = await getCleanData2(body);
         console.log(data);
         spinning.value = false;
         setChart(data);
@@ -142,11 +142,7 @@
               },
             },
             legend: {
-              data: [
-                '#2机组低背压出口蝶阀开度1(%)',
-                '#2机组低背压出口蝶阀开度2(%)',
-                '#2机组低背压综合热阻((m2.K)/W)',
-              ],
+              data: ['#1机组低背压综合热阻', '#1机组低压A真空泵电流', '#1机组低压B真空泵电流'],
               textStyle: {
                 fontSize: 18,
               },
@@ -172,7 +168,7 @@
             },
             yAxis: [
               {
-                name: '开度(%)',
+                name: '热阻((m2.K)/W)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -186,13 +182,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 30,
+                nameGap: 25,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name: '热阻',
+                name: '电流(A)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -215,9 +211,9 @@
             ],
             series: [
               {
-                name: '#2机组低背压出口蝶阀开度1(%)',
+                name: '#1机组低背压综合热阻',
                 type: 'line',
-                data: chartData['GBYCKDFKD1_2'],
+                data: chartData['DBYZHRZ_1'],
                 lineStyle: {
                   width: 3,
                   color: 'blue',
@@ -229,9 +225,9 @@
                 yAxisIndex: 0,
               },
               {
-                name: '#2机组低背压出口蝶阀开度2(%)',
+                name: '#1机组低压A真空泵电流',
                 type: 'line',
-                data: chartData['GBYCKDFKD2_2'],
+                data: chartData['U1DYAZKBDL_QC'],
                 lineStyle: {
                   width: 3,
                   color: 'red',
@@ -243,9 +239,9 @@
                 yAxisIndex: 0,
               },
               {
-                name: '#2机组低背压综合热阻((m2.K)/W)',
+                name: '#1机组低压B真空泵电流',
                 type: 'line',
-                data: chartData['DBYZHRZ_2'].map((num) => {
+                data: chartData['U1DYBZKBDL_QC'].map((num) => {
                   return [num[0], parseFloat(num[1].toFixed(2))];
                 }),
                 lineStyle: {
@@ -274,7 +270,7 @@
               },
             },
             legend: {
-              data: ['#2机组低背压水阻', '#2机组低背压阻力系数'],
+              data: ['#2机组低背压综合热阻', '#2机组低压A真空泵电流', ' #2机组低压B真空泵电流'],
               textStyle: {
                 fontSize: 18,
               },
@@ -300,7 +296,7 @@
             },
             yAxis: [
               {
-                name: '水阻(MPa)',
+                name: '热阻((m2.K)/W)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -314,129 +310,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 45,
+                nameGap: 25,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name: '阻力系数(/)',
-                type: 'value',
-                show: true,
-                alignTicks: true,
-                position: 'right',
-                axisLine: {
-                  show: true,
-                },
-                nameLocation: 'middle',
-                nameRotate: 90,
-                nameTextStyle: {
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                  align: 'middle',
-                },
-                nameGap: 45,
-                axisLabel: {
-                  fontSize: 18,
-                },
-              },
-            ],
-            series: [
-              {
-                name: '#2机组低背压水阻',
-                type: 'line',
-                data: chartData['DBYSZ_2'],
-                lineStyle: {
-                  width: 3,
-                  color: 'blue',
-                },
-                itemStyle: {
-                  color: 'blue',
-                },
-                symbol: 'none',
-                yAxisIndex: 0,
-              },
-              {
-                name: '#2机组低背压阻力系数',
-                type: 'line',
-                data: chartData['DBYZLXS_2'],
-                lineStyle: {
-                  width: 3,
-                  color: 'red',
-                },
-                itemStyle: {
-                  color: 'red',
-                },
-                symbol: 'none',
-                yAxisIndex: 1,
-              },
-            ],
-          },
-          false,
-        );
-      }
-      function setChart2(chartData) {
-        setOptions2(
-          {
-            animation: false,
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'cross',
-              },
-            },
-            legend: {
-              data: [
-                '#2机组高背压出口蝶阀开度1(%)',
-                '#2机组高背压出口蝶阀开度2(%)',
-                '#2机组高背压综合热阻((m2.K)/W)',
-              ],
-              textStyle: {
-                fontSize: 18,
-              },
-            },
-            dataZoom: [
-              {
-                showDataShadow: false,
-              },
-            ],
-            grid: {
-              left: '5%',
-              right: '5%',
-              bottom: '8%',
-              containLabel: true,
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {},
-              },
-            },
-            xAxis: {
-              type: 'category',
-            },
-            yAxis: [
-              {
-                name: '开度(%)',
-                type: 'value',
-                show: true,
-                alignTicks: true,
-                axisLine: {
-                  show: true,
-                },
-                nameLocation: 'middle',
-                nameRotate: 90,
-                nameTextStyle: {
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                  align: 'middle',
-                },
-                nameGap: 30,
-                axisLabel: {
-                  fontSize: 18,
-                },
-              },
-              {
-                name: '热阻',
+                name: '电流(A)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -459,9 +339,9 @@
             ],
             series: [
               {
-                name: '#2机组高背压出口蝶阀开度1(%)',
+                name: '#2机组低背压综合热阻',
                 type: 'line',
-                data: chartData['GBYCKDFKD1_2'],
+                data: chartData['DBYZHRZ_2'],
                 lineStyle: {
                   width: 3,
                   color: 'blue',
@@ -473,9 +353,9 @@
                 yAxisIndex: 0,
               },
               {
-                name: '#2机组高背压出口蝶阀开度2(%)',
+                name: '#2机组低压A真空泵电流',
                 type: 'line',
-                data: chartData['GBYCKDFKD2_2'],
+                data: chartData['U2DYAZKBDL_QC'],
                 lineStyle: {
                   width: 3,
                   color: 'red',
@@ -487,9 +367,137 @@
                 yAxisIndex: 0,
               },
               {
-                name: '#2机组高背压综合热阻((m2.K)/W)',
+                name: '#2机组低压B真空泵电流',
                 type: 'line',
-                data: chartData['GBYZHRZ_2'].map((num) => {
+                data: chartData['U2DYBZKBDL_QC'].map((num) => {
+                  return [num[0], parseFloat(num[1].toFixed(2))];
+                }),
+                lineStyle: {
+                  width: 3,
+                  color: 'rgb(128,0,128)',
+                },
+                itemStyle: {
+                  color: 'rgb(128,0,128)',
+                },
+                symbol: 'none',
+                yAxisIndex: 1,
+              },
+            ],
+          },
+          false,
+        );
+      }
+      function setChart2(chartData) {
+        setOptions2(
+          {
+            animation: false,
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross',
+              },
+            },
+            legend: {
+              data: ['#1机组高背压综合热阻', '#1机组高压A真空泵电流', '#1机组高压B真空泵电流'],
+              textStyle: {
+                fontSize: 18,
+              },
+            },
+            dataZoom: [
+              {
+                showDataShadow: false,
+              },
+            ],
+            grid: {
+              left: '5%',
+              right: '5%',
+              bottom: '8%',
+              containLabel: true,
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {},
+              },
+            },
+            xAxis: {
+              type: 'category',
+            },
+            yAxis: [
+              {
+                name: '热阻((m2.K)/W)',
+                type: 'value',
+                show: true,
+                alignTicks: true,
+                axisLine: {
+                  show: true,
+                },
+                nameLocation: 'middle',
+                nameRotate: 90,
+                nameTextStyle: {
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  align: 'middle',
+                },
+                nameGap: 25,
+                axisLabel: {
+                  fontSize: 18,
+                },
+              },
+              {
+                name: '电流(A)',
+                type: 'value',
+                show: true,
+                alignTicks: true,
+                position: 'right',
+                axisLine: {
+                  show: true,
+                },
+                nameLocation: 'middle',
+                nameRotate: 90,
+                nameTextStyle: {
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  align: 'middle',
+                },
+                nameGap: 35,
+                axisLabel: {
+                  fontSize: 18,
+                },
+              },
+            ],
+            series: [
+              {
+                name: '#1机组高背压综合热阻',
+                type: 'line',
+                data: chartData['GBYZHRZ_1'],
+                lineStyle: {
+                  width: 3,
+                  color: 'blue',
+                },
+                itemStyle: {
+                  color: 'blue',
+                },
+                symbol: 'none',
+                yAxisIndex: 0,
+              },
+              {
+                name: '#1机组高压A真空泵电流',
+                type: 'line',
+                data: chartData['U1DYAZKBDL_QC'],
+                lineStyle: {
+                  width: 3,
+                  color: 'red',
+                },
+                itemStyle: {
+                  color: 'red',
+                },
+                symbol: 'none',
+                yAxisIndex: 1,
+              },
+              {
+                name: '#1机组高压B真空泵电流',
+                type: 'line',
+                data: chartData['U1GYBZKBDL_QC'].map((num) => {
                   return [num[0], parseFloat(num[1].toFixed(2))];
                 }),
                 lineStyle: {
@@ -518,7 +526,7 @@
               },
             },
             legend: {
-              data: ['#2机组高背压水阻', '#2机组高背压阻力系数'],
+              data: ['#2机组高背压综合热阻', '#2机组高压A真空泵电流', '#2机组高压B真空泵电流'],
               textStyle: {
                 fontSize: 18,
               },
@@ -544,7 +552,7 @@
             },
             yAxis: [
               {
-                name: '水阻(MPa)',
+                name: '热阻((m2.K)/W)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -558,13 +566,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 55,
+                nameGap: 25,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name: '阻力系数(/)',
+                name: '电流(A)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -579,7 +587,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 55,
+                nameGap: 35,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -587,9 +595,9 @@
             ],
             series: [
               {
-                name: '#2机组高背压水阻',
+                name: '#2机组高背压综合热阻',
                 type: 'line',
-                data: chartData['GBYSZ_2'],
+                data: chartData['GBYZHRZ_2'],
                 lineStyle: {
                   width: 3,
                   color: 'blue',
@@ -601,15 +609,31 @@
                 yAxisIndex: 0,
               },
               {
-                name: '#2机组高背压阻力系数',
+                name: '#2机组高压A真空泵电流',
                 type: 'line',
-                data: chartData['GBYZLXS_2'],
+                data: chartData['U2GYAZKBDL_QC'],
                 lineStyle: {
                   width: 3,
                   color: 'red',
                 },
                 itemStyle: {
                   color: 'red',
+                },
+                symbol: 'none',
+                yAxisIndex: 1,
+              },
+              {
+                name: '#2机组高压B真空泵电流',
+                type: 'line',
+                data: chartData['U2GYBZKBDL_QC'].map((num) => {
+                  return [num[0], parseFloat(num[1].toFixed(2))];
+                }),
+                lineStyle: {
+                  width: 3,
+                  color: 'rgb(128,0,128)',
+                },
+                itemStyle: {
+                  color: 'rgb(128,0,128)',
                 },
                 symbol: 'none',
                 yAxisIndex: 1,

@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="冷端系统特性">
+  <PageWrapper title="#2机组调门实时计算">
     <a-card>
       <a-form :model="formData" :label-col="labelCol">
         <a-row :gutter="24" class="custom-row-gap">
@@ -130,6 +130,7 @@
           period: period,
           startTime: dayjs(startDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
           endTime: dayjs(endDateDate).format('YYYY-MM-DDTHH:mm:ssZ'),
+          unitId: 2,
         };
         spinning.value = true;
         const data = await getCalculateData(params);
@@ -187,7 +188,7 @@
             left: '8%',
             right: '4%',
             bottom: '8%',
-            top: '5%',
+            top: '1%',
             containLabel: true,
           },
           series: [

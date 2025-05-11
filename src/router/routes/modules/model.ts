@@ -47,8 +47,8 @@ const model: AppRouteModule[] = [
             },
           },
           {
-            path: 'calculate',
-            name: 'calculate',
+            path: 'calculation',
+            name: 'calculation',
             component: () => import('/@/views/sis/optimize/index.vue'),
             meta: {
               title: '节支计算',
@@ -136,6 +136,7 @@ const model: AppRouteModule[] = [
       {
         path: 'gas-diagnosis',
         name: 'gas-diagnosis',
+        component: () => import('/@/views/sis/gas/index.vue'),
         meta: {
           title: '汽侧不凝气体诊断',
         },
@@ -143,9 +144,28 @@ const model: AppRouteModule[] = [
       {
         path: 'tightness',
         name: 'tightness',
+        component: LAYOUT,
         meta: {
           title: '真空严密性试验',
         },
+        children: [
+          {
+            path: 'test1',
+            name: 'test1',
+            component: () => import('/@/views/sis/test/test1/index.vue'),
+            meta: {
+              title: '#1机组',
+            },
+          },
+          {
+            path: 'test2',
+            name: 'test2',
+            component: () => import('/@/views/sis/test/test2/index.vue'),
+            meta: {
+              title: '#2机组',
+            },
+          },
+        ],
       },
       {
         path: 'param',
@@ -178,7 +198,7 @@ const model: AppRouteModule[] = [
     path: '/monitor',
     name: 'Monitor',
     component: LAYOUT,
-    redirect: '/monitor/index',
+    redirect: '/monitor/calculate/cal1',
     meta: {
       orderNo: 20,
       icon: 'ion:grid-outline',
@@ -186,17 +206,43 @@ const model: AppRouteModule[] = [
     },
     children: [
       {
-        path: 'index',
-        name: 'MonitorIndex',
+        path: 'calculate',
+        name: 'calculate',
         component: LAYOUT,
         meta: {
           title: '实时调门计算',
         },
         children: [
           {
+            path: 'cal1',
+            name: 'cal1',
+            component: () => import('/@/views/sis/calculate/cal1/index.vue'),
+            meta: {
+              title: '#1机组',
+            },
+          },
+          {
+            path: 'cal2',
+            name: 'cal2',
+            component: () => import('/@/views/sis/calculate/cal2/index.vue'),
+            meta: {
+              title: '#2机组',
+            },
+          },
+        ],
+      },
+      {
+        path: 'index',
+        name: 'MonitorIndex',
+        component: LAYOUT,
+        meta: {
+          title: '调门状态检测',
+        },
+        children: [
+          {
             path: 'unit1',
             name: 'unit1',
-            component: () => import('/@/views/sis/calculate/index.vue'),
+            component: () => import('/@/views/sis/gate/gate1/index.vue'),
             meta: {
               title: '#1机组',
             },
@@ -204,7 +250,7 @@ const model: AppRouteModule[] = [
           {
             path: 'unit2',
             name: 'unit2',
-            component: () => import('/@/views/sis/calculate/index.vue'),
+            component: () => import('/@/views/sis/gate/gate2/index.vue'),
             meta: {
               title: '#2机组',
             },

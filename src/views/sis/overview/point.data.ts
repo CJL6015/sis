@@ -6,13 +6,18 @@ export const columns: BasicColumn[] = [
     className: 'big-word',
   },
   {
-    dataIndex: 'unit1',
+    dataIndex: 'now',
     className: 'big-word',
-    title: '#1机组',
+    title: '当前状态',
   },
   {
-    dataIndex: 'unit2',
+    dataIndex: 'optimize',
     className: 'big-word',
-    title: '#2机组',
+    title: '优化结果',
+  },
+  {
+    dataIndex: 'diff',
+    className: 'big-word',
+    title: '差值',
   },
 ];

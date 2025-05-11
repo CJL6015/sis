@@ -6,11 +6,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'name',
   },
   {
-    title: '#1机组',
-    dataIndex: 'unit1',
-    editComponent: 'InputNumber',
-  },
-  {
     title: '#2机组',
     dataIndex: 'unit2',
     editComponent: 'InputNumber',

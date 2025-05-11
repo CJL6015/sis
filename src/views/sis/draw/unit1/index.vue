@@ -142,7 +142,11 @@
               },
             },
             legend: {
-              data: ['#1机组低背压出口蝶阀开度1(%)', '#1机组低背压出口蝶阀开度2(%)', '#1机组低背压综合热阻((m2.K)/W)'],
+              data: [
+                '#1机组低背压出口蝶阀开度1(%)',
+                '#1机组低背压出口蝶阀开度2(%)',
+                '#1机组低背压综合热阻((m2.K)/W)',
+              ],
               textStyle: {
                 fontSize: 18,
               },
@@ -168,7 +172,7 @@
             },
             yAxis: [
               {
-                name:'开度(%)',
+                name: '开度(%)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -182,13 +186,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 35,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name:'热阻',
+                name: '热阻',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -213,7 +217,7 @@
               {
                 name: '#1机组低背压出口蝶阀开度1(%)',
                 type: 'line',
-                data: chartData['DBYCKDFKD1_1'],
+                data: chartData['GBYCKDFKD1_1'],
                 lineStyle: {
                   width: 3,
                   color: 'blue',
@@ -227,7 +231,7 @@
               {
                 name: '#1机组低背压出口蝶阀开度2(%)',
                 type: 'line',
-                data: chartData['DBYCKDFKD2_1'],
+                data: chartData['GBYCKDFKD2_1'],
                 lineStyle: {
                   width: 3,
                   color: 'red',
@@ -296,7 +300,7 @@
             },
             yAxis: [
               {
-                name:'水阻(MPa)',
+                name: '水阻(MPa)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -310,13 +314,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 55,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name:'阻力系数(/)',
+                name: '阻力系数(/)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -331,7 +335,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 35,
+                nameGap: 55,
                 axisLabel: {
                   fontSize: 18,
                 },
@@ -382,7 +386,11 @@
               },
             },
             legend: {
-              data: ['#1机组高背压出口蝶阀开度1(%)', '#1机组高背压出口蝶阀开度2(%)', '#1机组高背压综合热阻((m2.K)/W)'],
+              data: [
+                '#1机组高背压出口蝶阀开度1(%)',
+                '#1机组高背压出口蝶阀开度2(%)',
+                '#1机组高背压综合热阻((m2.K)/W)',
+              ],
               textStyle: {
                 fontSize: 18,
               },
@@ -408,7 +416,7 @@
             },
             yAxis: [
               {
-                name:'开度(%)',
+                name: '开度(%)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -422,13 +430,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 35,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name:'热阻',
+                name: '热阻',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -536,7 +544,7 @@
             },
             yAxis: [
               {
-                name:'水阻(MPa)',
+                name: '水阻(MPa)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -550,13 +558,13 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 25,
+                nameGap: 55,
                 axisLabel: {
                   fontSize: 18,
                 },
               },
               {
-                name:'阻力系数(/)',
+                name: '阻力系数(/)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -571,7 +579,7 @@
                   fontSize: 20,
                   align: 'middle',
                 },
-                nameGap: 35,
+                nameGap: 55,
                 axisLabel: {
                   fontSize: 18,
                 },

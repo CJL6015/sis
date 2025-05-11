@@ -1,7 +1,10 @@
 <template>
-  <PageWrapper title="概览">
+  <PageWrapper title="实时循泵优化节支计算概览">
     <a-card>
       <a-row>
+        <a-col :md="24">
+          <img :src="pic" style="display: block; width: 100%" />
+        </a-col>
         <a-col :md="24">
           <BasicTable @register="registerTable" size="large" />
         </a-col>
@@ -13,9 +16,10 @@
   import { Col, Row, Card, Divider } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { onMounted } from 'vue';
-  import { getOverviewTable } from '/@/api/sis/calculate';
+  import { getOverview } from '/@/api/sis/calculate';
   import { columns } from './point.data';
   import { BasicTable, useTable } from '/@/components/Table';
+  import pic from '/@/assets/images/pic.png';
 
   export default {
     components: {
@@ -40,7 +44,7 @@
       });
 
       async function getdata() {
-        const res = await getOverviewTable();
+        const res = await getOverview();
         methods.setTableData(res);
       }
 
@@ -52,6 +56,7 @@
       return {
         labelCol,
         registerTable,
+        pic,
       };
     },
   };
