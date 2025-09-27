@@ -346,7 +346,7 @@
             },
             yAxis: [
               {
-                name: '相对利润(万元/h)',
+                name: '相对利润(百元/h)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -516,7 +516,7 @@
             },
             yAxis: [
               {
-                name: '相对利润(万元/h)',
+                name: '相对利润(百元/h)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -683,7 +683,7 @@
             },
             yAxis: [
               {
-                name: '相对利润(万元/h)',
+                name: '相对利润(百元/h)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -899,7 +899,7 @@
             },
             yAxis: [
               {
-                name: '相对利润(万元/h)',
+                name: '相对利润(百元/h)',
                 type: 'value',
                 show: true,
                 alignTicks: true,
@@ -1067,7 +1067,7 @@
             },
             yAxis: [
               {
-                name: '相对利润(万元/h)',
+                name: '相对利润(百元/h)',
                 type: 'value',
                 show: true,
                 alignTicks: true,

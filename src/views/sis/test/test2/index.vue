@@ -61,7 +61,7 @@
               </tbody>
             </table>
           </a-col>
-          <a-col :md="14"> <div ref="chartRef" style="width: 100%; height: 550px"></div> </a-col>
+          <a-col :md="14"> <div ref="chartRef" style="width: 100%; height: 680px"></div> </a-col>
         </a-row>
       </a-spin>
       <a-divider />
@@ -135,6 +135,8 @@
         '高背压平均值(kPa)',
         '高背压排汽温度平均值(℃)',
         '高背压排汽温度平均值对应饱和压力(kPa)',
+        '低背压真空下降速度(kPa/min)',
+        '高背压真空下降速度(kPa/min)',
       ];
 
       const tableData = ref([
@@ -148,6 +150,8 @@
         { field: '高背压平均值(kPa)', value: '--' },
         { field: '高背压排汽温度平均值(℃)', value: '--' },
         { field: '高背压排汽温度平均值对应饱和压力(kPa)', value: '--' },
+        { field: '低背压真空下降速度(kPa/min)', value: '--' },
+        { field: '高背压真空下降速度(kPa/min)', value: '--' },
       ]);
       const status = ref('');
       async function getHistoryData() {

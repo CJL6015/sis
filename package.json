@@ -40,7 +40,7 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix --allow-empty-input"
     ],
     "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
       "prettier --write--parser json"
@@ -51,11 +51,11 @@
     "*.vue": [
       "prettier --write",
       "eslint --fix",
-      "stylelint --fix"
+      "stylelint --fix --allow-empty-input"
     ],
     "*.{scss,less,styl,html}": [
       "prettier --write",
-      "stylelint --fix"
+      "stylelint --fix --allow-empty-input"
     ],
     "*.md": [
       "prettier --write"

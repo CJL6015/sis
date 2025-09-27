@@ -164,7 +164,7 @@
           },
           yAxis: [
             {
-              name: '相对利润(万元/h)',
+              name: '相对利润(百元/h)',
               type: 'value',
               show: true,
               alignTicks: true,
@@ -426,10 +426,10 @@
         getRealtimeTable();
       });
       const quickRanges = {
-        '前6小时': [dayjs().subtract(6, 'hour'), dayjs()],
-        '前12小时': [dayjs().subtract(12, 'hour'), dayjs()],
-        '前1天': [dayjs().subtract(1, 'day'), dayjs()],
-        '前3天': [dayjs().subtract(3, 'day'), dayjs()],
+        前6小时: [dayjs().subtract(6, 'hour'), dayjs()],
+        前12小时: [dayjs().subtract(12, 'hour'), dayjs()],
+        前1天: [dayjs().subtract(1, 'day'), dayjs()],
+        前3天: [dayjs().subtract(3, 'day'), dayjs()],
       };
       const labelCol = { style: { width: '120px' } };
       return {
